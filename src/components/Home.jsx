@@ -129,7 +129,7 @@ export const Home = () => {
             </a>
             <a
               href="/practice"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-emerald-600/80 border border-emerald-500/40 rounded-lg hover:bg-emerald-500 hover:scale-105 hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-white/5 border border-white/10 backdrop-blur-md rounded-lg hover:bg-white/10 hover:scale-105 hover:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
             >
               Practice
             </a>
