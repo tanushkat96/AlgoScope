@@ -85,7 +85,12 @@ function App() {
       element: (
         <Suspense fallback={<PageLoader />}>
           <AppLayout>
-            <PracticePage />
+            <SignedIn>
+              <PracticePage />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
           </AppLayout>
         </Suspense>
       ),
