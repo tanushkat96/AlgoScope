@@ -39,6 +39,7 @@ createRoot(document.getElementById('root')).render(
               background: `radial-gradient(circle at center,rgba(125, 211, 252, 0.35) 0%, rgba(30, 41, 59, 0.9) 35%,#020617 75% ) `,
               backdropFilter: 'blur(12px)',
               boxShadow: '0 0 40px rgba(56, 189, 248, 0.15)',
+              
               },
 
               formFieldInput: {
@@ -49,11 +50,11 @@ createRoot(document.getElementById('root')).render(
               },
 
               footer: {
-                background: 'transparent',
+                background: 'black',
               },
 
               footerAction: {
-                background: 'transparent',
+                background: 'black',
               },
 
               footerActionText: {
@@ -68,6 +69,36 @@ createRoot(document.getElementById('root')).render(
               color: '#ffffff',
               fontWeight: '500',
             },
+
+
+
+userButtonPopoverActionButton: {
+  color: '#ffffff !important',
+  background: 'transparent',
+
+  '&:hover': {
+    background: '#111827',
+    color: '#ffffff !important',
+  },
+
+  '&:focus': {
+    color: '#ffffff !important',
+  },
+
+  '&:active': {
+    color: '#ffffff !important',
+  },
+},
+
+userButtonPopoverActionButtonText: {
+  color: '#ffffff !important',
+},
+
+userButtonPopoverActionButtonIcon: {
+  color: '#8b5cf6 !important',
+},
+
+
 
             formButtonPrimary: {
               background: `radial-gradient(circle at center,rgba(125, 211, 252, 0.35) 0%,rgba(30, 41, 59, 0.9) 35%,#020617 75%)`,
