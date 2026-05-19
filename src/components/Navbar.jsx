@@ -6,7 +6,6 @@ import {
   SignInButton,
   UserButton,
 } from '@clerk/clerk-react'
-
 // 1. Import motion and AnimatePresence
 import { motion, AnimatePresence } from 'framer-motion'
 import githubIcon from '../assets/github-mark-white.svg'
@@ -101,7 +100,7 @@ export const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Search - Hybrid flex/absolute fix applied here */}
+          {/* Desktop Search */}
           <div className="hidden md:flex flex-1 justify-center max-w-xs mx-4 lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:max-w-md lg:w-full lg:mx-0 z-10">
             <SearchBar />
           </div>
@@ -112,6 +111,7 @@ export const Navbar = () => {
                 <button className="rounded-lg px-4 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200">
                   Explore
                 </button>
+
                 <div className="absolute left-0 top-12 py-2 invisible opacity-0 translate-y-2 min-w-[220px] rounded-xl border border-white/10 bg-slate-900/95 p-2 shadow-2xl backdrop-blur-xl transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 z-50">
                   {algorithmLinks.map((link) => (
                     <Link
@@ -129,7 +129,6 @@ export const Navbar = () => {
                 </div>
               </li>
             </ul>
-
             <Link
               to="https://github.com/algoscope-hq/AlgoScope"
               className="inline-flex items-center rounded-xl bg-white px-5 py-2 text-sm font-bold text-black shadow-lg hover:bg-slate-200 transition-all duration-200 active:scale-95"
