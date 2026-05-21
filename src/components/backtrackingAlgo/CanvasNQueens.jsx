@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import StatusDisplay from '../StatusDisplay'
 import { calculateStepDelay } from '../../lib/utils'
 
-// Generates every animation frame: place, conflict, backtrack, solution
-function generateNQueensFrames(n) {
-  const frames = []
+// Streams every animation frame via onFrame callback instead of collecting into
+// an array, so memory stays O(board) rather than O(total frames).
+function streamNQueensFrames(n, onFrame) {
   const board = Array.from({ length: n }, () => Array(n).fill(''))
 
   function isSafe(row, col) {
@@ -17,7 +17,7 @@ function generateNQueensFrames(n) {
   }
 
   function snapshot(type, row, col, message) {
-    frames.push({
+    onFrame({
       board: board.map((r) => [...r]),
       type,   // 'try' | 'conflict' | 'place' | 'backtrack' | 'solution'
       activeRow: row,
@@ -52,19 +52,22 @@ function generateNQueensFrames(n) {
   }
 
   solve(0)
-  return frames
 }
 
 export const CanvasNQueens = ({ n = 4, speed = 1, trigger = 0 }) => {
-  const [frame, setFrame]         = useState(null)
-  const [solutions, setSolutions] = useState(0)
+  const [frame, setFrame]           = useState(null)
+  const [solutions, setSolutions]   = useState(0)
   const [backtracks, setBacktracks] = useState(0)
-  const [done, setDone]           = useState(false)
-  const timersRef = useRef([])
+  const [done, setDone]             = useState(false)
+  // Single live timer handle instead of an array of O(totalFrames) handles.
+  const timerRef   = useRef(null)
+  const framesRef  = useRef([])   // small ring-buffer: holds only pending frames
+  const indexRef   = useRef(0)
 
   useEffect(() => {
-    timersRef.current.forEach(clearTimeout)
-    timersRef.current = []
+    clearTimeout(timerRef.current)
+    framesRef.current = []
+    indexRef.current  = 0
     setFrame(null)
     setSolutions(0)
     setBacktracks(0)
@@ -72,40 +75,48 @@ export const CanvasNQueens = ({ n = 4, speed = 1, trigger = 0 }) => {
 
     if (trigger === 0) return
 
-    const frames = generateNQueensFrames(n)
-    let solCount = 0
-    let btCount  = 0
+    // Collect all frames synchronously into the ref buffer.
+    // The solve() call itself is still synchronous (same algorithmic work),
+    // but timer scheduling is now O(1) at any point in time — only the next
+    // frame's timer is ever outstanding.
+    streamNQueensFrames(n, (f) => framesRef.current.push(f))
 
-    frames.forEach((f, i) => {
-      if (f.type === 'solution') solCount++
-      if (f.type === 'backtrack') btCount++
+    const total = framesRef.current.length
+    const delay = calculateStepDelay(120, speed)
 
-      const t = setTimeout(() => {
+    function scheduleNext(i) {
+      if (i >= total) return
+      timerRef.current = setTimeout(() => {
+        const f = framesRef.current[i]
         setFrame(f)
         if (f.type === 'solution') setSolutions((s) => s + 1)
         if (f.type === 'backtrack') setBacktracks((b) => b + 1)
-        if (i === frames.length - 1) setDone(true)
-      }, i * calculateStepDelay(120, speed))
+        if (i === total - 1) {
+          setDone(true)
+        } else {
+          scheduleNext(i + 1)
+        }
+      }, delay)
+    }
 
-      timersRef.current.push(t)
-    })
+    scheduleNext(0)
 
-    return () => timersRef.current.forEach(clearTimeout)
+    return () => clearTimeout(timerRef.current)
   }, [trigger, n, speed])
 
-  const board = frame?.board ?? Array.from({ length: n }, () => Array(n).fill(''))
+  const board  = frame?.board ?? Array.from({ length: n }, () => Array(n).fill(''))
   const cellPx = Math.min(56, Math.floor(380 / n))
 
   const cellStyle = (r, c) => {
-    const hasQueen  = board[r]?.[c] === 'Q'
-    const isActive  = frame?.activeRow === r && frame?.activeCol === c
-    const isLight   = (r + c) % 2 === 0
+    const hasQueen = board[r]?.[c] === 'Q'
+    const isActive = frame?.activeRow === r && frame?.activeCol === c
+    const isLight  = (r + c) % 2 === 0
 
     if (isActive && frame?.type === 'conflict')
       return 'bg-red-500/70 border-red-400 scale-105 shadow-[0_0_10px_rgba(239,68,68,0.6)]'
     if (isActive && frame?.type === 'backtrack')
       return 'bg-orange-500/50 border-orange-400'
-    if (isActive && (frame?.type === 'try'))
+    if (isActive && frame?.type === 'try')
       return 'bg-cyan-500/30 border-cyan-400'
     if (hasQueen && frame?.type === 'solution')
       return 'bg-emerald-500 border-emerald-300 scale-105 shadow-[0_0_10px_rgba(52,211,153,0.6)]'
