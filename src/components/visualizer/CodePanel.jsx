@@ -35,7 +35,10 @@ const CodePanel = memo(function CodePanel({
       if (nodeTop < containerTop) {
         container.scrollTo({ top: nodeTop - 20, behavior: 'smooth' })
       } else if (nodeBottom > containerBottom) {
-        container.scrollTo({ top: nodeBottom - container.clientHeight + 20, behavior: 'smooth' })
+        container.scrollTo({
+          top: nodeBottom - container.clientHeight + 20,
+          behavior: 'smooth',
+        })
       }
     }
   }, [activeLine])
