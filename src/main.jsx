@@ -10,7 +10,6 @@ const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {
   // Non-fatal: allow local/CI runs without Clerk configured
-  // eslint-disable-next-line no-console
   console.warn(
     'VITE_CLERK_PUBLISHABLE_KEY not set — running in unauthenticated dev mode'
   )
