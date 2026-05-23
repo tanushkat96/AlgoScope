@@ -5,12 +5,7 @@ import { MoveUpRight } from 'lucide-react'
 
 const MotionLink = motion(Link)
 
-export default function AlgoCard({
-  title,
-  description,
-  link,
-  color,
-}) {
+export default function AlgoCard({ title, description, link, color }) {
   const cardRef = useRef(null)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
@@ -61,7 +56,7 @@ export default function AlgoCard({
             : 'transparent',
         }}
       />
-      
+
       {/* Subtle Inner Glow Border tracking mouse */}
       <motion.div
         className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"
@@ -69,7 +64,8 @@ export default function AlgoCard({
           background: isHovering
             ? `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.15), transparent 40%)`
             : 'transparent',
-          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMask:
+            'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
           maskComposite: 'exclude',
           padding: '1px',
@@ -87,7 +83,6 @@ export default function AlgoCard({
 
       {/* Content */}
       <div className="relative z-10 flex flex-col h-full min-h-[200px]">
-        
         <div className="mb-4 mt-2">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/60 transition-all duration-300">
             {title}
