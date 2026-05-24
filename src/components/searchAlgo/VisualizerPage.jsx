@@ -272,14 +272,16 @@ export const VisualizerPage = () => {
             How to use
           </p>
           {[
-            { step: '1', label: 'Pick an algorithm' },
-            { step: '2', label: 'Choose a starting node' },
-            { step: '3', label: 'Press Run' },
+            { step: '1', label: 'Build your graph (toolbar on canvas)' },
+            { step: '2', label: 'Pick an algorithm' },
+            { step: '3', label: 'Choose a starting node' },
+            { step: '4', label: 'Press Run' },
           ].map(({ step, label }) => {
             const done =
-              (step === '1' && algorithm) ||
-              (step === '2' && node) ||
-              (step === '3' && runKey !== null)
+              (step === '1' && nodeIds.length > 0) ||
+              (step === '2' && algorithm) ||
+              (step === '3' && node) ||
+              (step === '4' && runKey !== null)
 
             return (
               <div key={step} className="flex items-center gap-3">
@@ -338,7 +340,7 @@ export const VisualizerPage = () => {
       <div className="w-full lg:w-3/4 flex flex-col gap-6">
         {mode === 'solo' ? (
           <>
-            <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
+            <div className="rounded-xl border border-white/10 shadow-lg">
               <CanvasSearching
                 algorithm={algorithm}
                 vertex={node}

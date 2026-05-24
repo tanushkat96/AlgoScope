@@ -374,7 +374,14 @@ export const GraphBuilderToolbar = ({
   return (
     <>
       {/* ── Floating Toolbar ─────────────────────────────────────────────── */}
-      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 bg-slate-900/85 backdrop-blur-md border border-white/10 rounded-2xl px-2 py-1.5 shadow-2xl">
+      <div
+        role="toolbar"
+        aria-label="Graph builder"
+        className="absolute top-3 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto flex flex-wrap items-center justify-center gap-1 max-w-[calc(100%-1rem)] bg-slate-900/95 backdrop-blur-md border border-cyan-500/30 rounded-2xl px-2 py-1.5 shadow-2xl shadow-cyan-500/10"
+      >
+        <span className="sr-only sm:not-sr-only sm:inline-flex items-center px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-400/90 border-r border-white/10 mr-1">
+          Build
+        </span>
         {/* Mode pills */}
         <div className="flex items-center gap-1 pr-2 border-r border-white/10">
           {modeButtons.map(({ id, label, icon, tooltip }) => (
@@ -390,7 +397,7 @@ export const GraphBuilderToolbar = ({
               }`}
             >
               {icon}
-              <span className="hidden sm:inline">{label}</span>
+              <span className="text-[10px] sm:text-xs">{label}</span>
             </button>
           ))}
         </div>
@@ -425,7 +432,7 @@ export const GraphBuilderToolbar = ({
                 d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
               />
             </svg>
-            <span className="hidden sm:inline">Delete</span>
+            <span className="text-[10px] sm:text-xs">Delete</span>
           </button>
 
           <button
@@ -447,7 +454,7 @@ export const GraphBuilderToolbar = ({
                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
               />
             </svg>
-            <span className="hidden sm:inline">Clear</span>
+            <span className="text-[10px] sm:text-xs">Clear</span>
           </button>
 
           <button
@@ -469,14 +476,14 @@ export const GraphBuilderToolbar = ({
                 d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
               />
             </svg>
-            <span className="hidden sm:inline">Reset</span>
+            <span className="text-[10px] sm:text-xs">Reset</span>
           </button>
         </div>
       </div>
 
       {/* ── Mode hint banner ────────────────────────────────────────────────── */}
       {builderMode !== 'pointer' && (
-        <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-[100] pointer-events-none">
           <div
             className={`px-4 py-1.5 rounded-full text-xs font-semibold border backdrop-blur-sm ${
               builderMode === 'addNode'

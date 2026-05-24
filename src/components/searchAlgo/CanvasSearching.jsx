@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import StatusDisplay from '../StatusDisplay'
 import { GraphBuilderToolbar } from '../shared/GraphBuilderToolbar'
+import { scheduleNetworkReady } from '../../lib/scheduleNetworkReady'
 
 // ── Preset graph data (also used by Reset button in toolbar) ──────────────────
 const PRESET_NODES = [
@@ -148,14 +149,13 @@ export const CanvasSearching = ({
     edgesRef.current = edges
     networkRef.current = network
 
-    const handleNetworkReady = () => {
+    const cancelReady = scheduleNetworkReady(network, () => {
       setNetworkReady(true)
       notifyGraphChange()
-    }
-    network.once('stabilizationIterationsDone', handleNetworkReady)
+    })
 
     return () => {
-      network.off('stabilizationIterationsDone', handleNetworkReady)
+      cancelReady()
       network.destroy()
       networkRef.current = null
       nodesRef.current = null

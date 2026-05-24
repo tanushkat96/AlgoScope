@@ -175,27 +175,40 @@ export const ShortestPathPage = () => {
           </p>
 
           {[
+            ...(viewMode === 'network'
+              ? [
+                  {
+                    step: '1',
+                    label: 'Build your graph (toolbar on canvas)',
+                  },
+                ]
+              : []),
             {
-              step: '1',
+              step: viewMode === 'network' ? '2' : '1',
               label: 'Pick an algorithm',
             },
             {
-              step: '2',
+              step: viewMode === 'network' ? '3' : '2',
               label:
                 viewMode === 'grid'
                   ? 'Build your grid'
                   : 'Choose source & target',
             },
             {
-              step: '3',
+              step: viewMode === 'network' ? '4' : '3',
               label: 'Press Run',
             },
           ].map(({ step, label }) => {
             const done =
-              (step === '1' && algorithm) ||
-              (step === '2' &&
+              (viewMode === 'network' &&
+                step === '1' &&
+                nodeIds.length > 0) ||
+              ((viewMode === 'network' ? step === '2' : step === '1') &&
+                algorithm) ||
+              ((viewMode === 'network' ? step === '3' : step === '2') &&
                 (viewMode === 'grid' ? true : source && target)) ||
-              (step === '3' && runKey !== null)
+              ((viewMode === 'network' ? step === '4' : step === '3') &&
+                runKey !== null)
 
             return (
               <div key={step} className="flex items-center gap-3">
@@ -265,7 +278,7 @@ export const ShortestPathPage = () => {
           <>
             {mode === 'solo' ? (
               <>
-                <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg">
+                <div className="rounded-xl border border-white/10 shadow-lg">
                   <CanvasShortestPath
                     algorithm={algorithm}
                     source={source}
