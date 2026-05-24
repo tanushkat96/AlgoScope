@@ -193,9 +193,9 @@ const Footer = () => {
             </a>
             {' & '}
             <a
-              className="theme-text-muted hover:theme-text-strong transition-colors"
+               target="_blank"className="font-semibold text-cyan-400 transition hover:text-cyan-300"
               href="https://github.com/adityapaul26"
-              target="_blank"
+             
               rel="noreferrer"
             >
               adityapaul26
