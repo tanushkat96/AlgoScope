@@ -123,4 +123,34 @@ export const complexityMap = {
     worst: 'O(9^M)',
     space: 'O(M)',
   },
+  gcd: {
+    best: 'O(log min(a, b))',
+    average: 'O(log min(a, b))',
+    worst: 'O(log min(a, b))',
+    space: 'O(1)',
+  },
+  fastexpo: {
+    best: 'O(log exp)',
+    average: 'O(log exp)',
+    worst: 'O(log exp)',
+    space: 'O(1)',
+  },
+  bitmanip: {
+    best: 'O(1)',
+    average: 'O(1)',
+    worst: 'O(1)',
+    space: 'O(1)',
+  },
+  sieve: {
+    best: 'O(N log log N)',
+    average: 'O(N log log N)',
+    worst: 'O(N log log N)',
+    space: 'O(N)',
+  },
+  fibonacci: {
+    best: 'O(2^N)',
+    average: 'O(2^N)',
+    worst: 'O(2^N)',
+    space: 'O(N)',
+  },
 }
