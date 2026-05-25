@@ -49,5 +49,14 @@ export function useKeyboardShortcuts({
 
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [onPlayPause, onStepForward, onStepBackward, onReset, onSpeedUp, onSlowDown, onHelp, disabled])
+  }, [
+    onPlayPause,
+    onStepForward,
+    onStepBackward,
+    onReset,
+    onSpeedUp,
+    onSlowDown,
+    onHelp,
+    disabled,
+  ])
 }
