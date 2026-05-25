@@ -43,19 +43,7 @@ const ScrollToTopButton = () => {
           onClick={scrollToTop}
           type="button"
           aria-label="Scroll to top"
-          style={{
-            backgroundColor: isDark ? '#0f285d' : '#6366f1',
-            color: '#ffffff',
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            border: 'none',
-          }}
-          className="fixed bottom-6 right-6 z-50 shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500 text-white shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 dark:bg-blue-950"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
