@@ -61,10 +61,9 @@ export const ShortestPathPage = () => {
     if (!algorithm) return
 
     if (viewMode === 'network') {
-      if (algorithm === 'kruskal') {
-      } else if (algorithm === 'prim') {
+      if (algorithm === 'prim') {
         if (!source) return
-      } else {
+      } else if (algorithm !== 'kruskal') {
         if (!source || !target) return
       }
     }
@@ -92,11 +91,9 @@ export const ShortestPathPage = () => {
     if (!algorithm) return ''
 
     const algoSource = shortestPathSources[algorithm]
-
     if (!algoSource) return ''
 
     const viewSource = algoSource[viewMode]
-
     if (!viewSource) return ''
 
     return viewSource[language]?.code ?? ''
@@ -203,12 +200,7 @@ export const ShortestPathPage = () => {
 
           {[
             ...(viewMode === 'network'
-              ? [
-                  {
-                    step: '1',
-                    label: 'Build your graph (toolbar on canvas)',
-                  },
-                ]
+              ? [{ step: '1', label: 'Build your graph (toolbar on canvas)' }]
               : []),
             {
               step: viewMode === 'network' ? '2' : '1',
