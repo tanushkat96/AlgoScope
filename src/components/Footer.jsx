@@ -27,11 +27,25 @@ const Footer = () => {
       color: 'hover:border-purple-500/30 text-purple-400 bg-purple-500/5',
     },
     {
+      name: 'Backtracking',
+      path: '/backtracking',
+      desc: 'N-Queens, Sudoku solver & more',
+      complexity: 'O(N!)',
+      color: 'hover:border-rose-500/30 text-rose-400 bg-rose-500/5',
+    },
+    {
       name: 'Arrays',
       path: '/ldssearch',
       desc: 'Kadane, Moore, sliding windows', // Fixed typo here
       complexity: 'O(N)',
       color: 'hover:border-emerald-500/30 text-emerald-400 bg-emerald-500/5',
+    },
+    {
+      name: 'Challenges',
+      path: '/challenge',
+      desc: 'Guess the running algorithm game',
+      complexity: 'Interactive',
+      color: 'hover:border-yellow-500/30 text-yellow-400 bg-yellow-500/5',
     },
   ]
 

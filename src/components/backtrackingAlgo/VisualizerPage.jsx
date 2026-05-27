@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import React, { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSearchParams } from 'react-router-dom'
@@ -6,11 +7,15 @@ import ComplexityCard from '../ComplexityCard'
 import CodePanel from '../visualizer/CodePanel'
 import { CanvasNQueens } from './CanvasNQueens'
 import { CanvasSudoku } from './CanvasSudoku'
+import { CanvasTowerOfHanoi } from './CanvasTowerOfHanoi'
 import { MenuSetAlgoBacktracking } from './MenuSetAlgoBacktracking'
 import { ComparisonMode } from './ComparisonMode'
 import { getBacktrackingSource } from '../../algorithms/backtracking/backtrackingSources'
 
 export default function VisualizerPage() {
+  useEffect(() => {
+    document.title = 'Backtracking | AlgoScope'
+  }, [])
   const [searchParams, setSearchParams] = useSearchParams()
   const activeTab = searchParams.get('mode') === 'compare' ? 'compare' : 'solo'
 
@@ -133,6 +138,7 @@ export default function VisualizerPage() {
 function SoloMode() {
   const [algo, setAlgo] = useState('nqueens')
   const [boardSize, setBoardSize] = useState(6)
+  const [diskCount, setDiskCount] = useState(4)
   const [speed, setSpeed] = useState(1)
   const [language, setLanguage] = useState('javascript')
   const [trigger, setTrigger] = useState(0)
@@ -150,7 +156,8 @@ function SoloMode() {
     [algo, language]
   )
 
-  const complexityKey = algo === 'nqueens' ? 'nqueens' : 'sudoku'
+  const complexityKey =
+    algo === 'nqueens' ? 'nqueens' : algo === 'hanoi' ? 'hanoi' : 'sudoku'
 
   return (
     <div className="flex flex-col lg:flex-row p-4 sm:p-6 gap-6">
@@ -165,6 +172,8 @@ function SoloMode() {
           setAlgo={handleAlgoChange}
           boardSize={boardSize}
           setBoardSize={setBoardSize}
+          diskCount={diskCount}
+          setDiskCount={setDiskCount}
           onVisualize={handleVisualize}
           onReset={handleReset}
         />
@@ -193,13 +202,19 @@ function SoloMode() {
           </select>
         </div>
 
-        <ComplexityCard algorithm={complexityKey} />
+        <ComplexityCard algorithm={complexityKey} compact />
       </div>
 
       {/* Canvas + Code Panel */}
       <div className="w-full lg:w-3/4 xl:w-4/5 flex flex-col gap-6">
         {algo === 'nqueens' ? (
           <CanvasNQueens n={boardSize} speed={speed} trigger={trigger} />
+        ) : algo === 'hanoi' ? (
+          <CanvasTowerOfHanoi
+            diskCount={diskCount}
+            speed={speed}
+            trigger={trigger}
+          />
         ) : (
           <CanvasSudoku speed={speed} trigger={trigger} />
         )}
@@ -208,7 +223,9 @@ function SoloMode() {
           title={
             algo === 'nqueens'
               ? 'N-Queens Implementation'
-              : 'Sudoku Solver Implementation'
+              : algo === 'hanoi'
+                ? 'Tower of Hanoi Implementation'
+                : 'Sudoku Solver Implementation'
           }
           code={currentSource}
           language={language}

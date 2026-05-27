@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import SpeedSlider from '../SpeedSlider'
 import ComplexityCard from '../ComplexityCard'
 import CodePanel from '../visualizer/CodePanel'
@@ -8,21 +8,25 @@ import { CanvasGCD } from './CanvasGCD'
 import { CanvasFastExpo } from './CanvasFastExpo.jsx'
 import { CanvasBitManip } from './CanvasBitManip.jsx'
 import { CanvasSieve } from './CanvasSieve.jsx'
+import { CanvasFibonacci } from './CanvasFibonacci.jsx'
 import {
   generateEuclideanGCDSteps,
   generateFastExpoSteps,
   generateBitOpSteps,
   generateSieveSteps,
+  generateFibonacciSteps,
 } from '../../algorithms/mathTheory/mathTheorySteps'
 import {
   getGCDSource,
   getFastExpoSource,
   getBitManipSource,
   getSieveSource,
+  getFibonacciSource,
   resolveGCDLine,
   resolveFastExpoLine,
   resolveBitManipLine,
   resolveSieveLine,
+  resolveFibonacciLine,
 } from '../../algorithms/mathTheory/mathTheorySources'
 
 const ALGO_TABS = [
@@ -30,9 +34,13 @@ const ALGO_TABS = [
   { key: 'expo', label: 'Fast Exponentiation', complexityKey: 'fastexpo' },
   { key: 'bits', label: 'Bit Manipulation', complexityKey: 'bitmanip' },
   { key: 'sieve', label: 'Sieve of Eratosthenes', complexityKey: 'sieve' },
+  { key: 'fibonacci', label: 'Fibonacci Sequence', complexityKey: 'fibonacci' },
 ]
 
 export const MathSoloVisualizer = () => {
+  useEffect(() => {
+    document.title = 'Math Theory | AlgoScope'
+  }, [])
   const [algo, setAlgo] = useState('gcd')
   const [speed, setSpeed] = useState(1)
   const [language, setLanguage] = useState('javascript')
@@ -53,6 +61,10 @@ export const MathSoloVisualizer = () => {
   // Sieve state
   const [sieveLimit, setSieveLimit] = useState(30)
 
+  // Fibonacci state
+  const [fibLimit, setFibLimit] = useState(6)
+  const [isStepMode, setIsStepMode] = useState(false)
+
   const {
     currentStep,
     currentStepIndex,
@@ -71,13 +83,25 @@ export const MathSoloVisualizer = () => {
   const handleVisualize = () => {
     clear()
     if (algo === 'gcd') {
-      loadSteps(generateEuclideanGCDSteps(Number(gcdA), Number(gcdB)))
+      loadSteps(generateEuclideanGCDSteps(Number(gcdA), Number(gcdB)), {
+        autoPlay: !isStepMode,
+      })
     } else if (algo === 'expo') {
-      loadSteps(generateFastExpoSteps(Number(expoBase), Number(expoExp)))
+      loadSteps(generateFastExpoSteps(Number(expoBase), Number(expoExp)), {
+        autoPlay: !isStepMode,
+      })
     } else if (algo === 'sieve') {
-      loadSteps(generateSieveSteps(Number(sieveLimit)))
+      loadSteps(generateSieveSteps(Number(sieveLimit)), {
+        autoPlay: !isStepMode,
+      })
+    } else if (algo === 'fibonacci') {
+      loadSteps(generateFibonacciSteps(Number(fibLimit)), {
+        autoPlay: !isStepMode,
+      })
     } else {
-      loadSteps(generateBitOpSteps(Number(bitA), Number(bitB), bitOp))
+      loadSteps(generateBitOpSteps(Number(bitA), Number(bitB), bitOp), {
+        autoPlay: !isStepMode,
+      })
     }
   }
 
@@ -89,6 +113,7 @@ export const MathSoloVisualizer = () => {
     if (algo === 'gcd') return getGCDSource(language)
     if (algo === 'expo') return getFastExpoSource(language)
     if (algo === 'sieve') return getSieveSource(language)
+    if (algo === 'fibonacci') return getFibonacciSource(language)
     return getBitManipSource(language)
   }, [algo, language])
 
@@ -98,6 +123,8 @@ export const MathSoloVisualizer = () => {
     if (algo === 'expo')
       return resolveFastExpoLine(language, currentStep.lineKey)
     if (algo === 'sieve') return resolveSieveLine(language, currentStep.lineKey)
+    if (algo === 'fibonacci')
+      return resolveFibonacciLine(language, currentStep.lineKey)
     if (algo === 'bits')
       return resolveBitManipLine(language, currentStep.lineKey)
     return undefined
@@ -317,6 +344,37 @@ export const MathSoloVisualizer = () => {
           </div>
         )}
 
+        {algo === 'fibonacci' && (
+          <div className="space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+              Inputs
+            </p>
+            <Tooltip
+              content="Limit (N): keeps tree readable (2–8)"
+              position="right"
+              className="w-full"
+            >
+              <div>
+                <label className="text-xs text-slate-500 mb-1 block">
+                  Limit (N)
+                </label>
+                <input
+                  type="number"
+                  min={2}
+                  max={8}
+                  value={fibLimit}
+                  onChange={(e) =>
+                    setFibLimit(
+                      Math.min(8, Math.max(2, Number(e.target.value)))
+                    )
+                  }
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-white outline-none focus:border-cyan-500 text-sm"
+                />
+              </div>
+            </Tooltip>
+          </div>
+        )}
+
         <div className="space-y-3 pt-2 pb-2 border-t border-white/10">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-2">
@@ -340,6 +398,28 @@ export const MathSoloVisualizer = () => {
               <option value="cpp">C++</option>
             </select>
           </div>
+        </div>
+        <div className="flex rounded-xl overflow-hidden border border-slate-700 mb-2">
+          <button
+            type="button"
+            onClick={() => {
+              setIsStepMode(false)
+              clear()
+            }}
+            className={`flex-1 py-2 text-xs font-semibold transition-all ${!isStepMode ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-slate-200'}`}
+          >
+            Auto
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setIsStepMode(true)
+              clear()
+            }}
+            className={`flex-1 py-2 text-xs font-semibold transition-all ${isStepMode ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-slate-200'}`}
+          >
+            Step
+          </button>
         </div>
         {/* Playback buttons */}
         <div className="space-y-2">
@@ -430,6 +510,12 @@ export const MathSoloVisualizer = () => {
           <CanvasSieve
             currentStep={currentStep}
             inputLimit={Number(sieveLimit)}
+          />
+        )}
+        {algo === 'fibonacci' && (
+          <CanvasFibonacci
+            currentStep={currentStep}
+            inputLimit={Number(fibLimit)}
           />
         )}
 

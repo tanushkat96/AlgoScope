@@ -58,6 +58,11 @@ const pageMetadata = {
     description:
       'Learn about AlgoScope, its mission, and the interactive features built to make algorithms easier to understand.',
   },
+  '/challenge': {
+    title: 'Guess the Algorithm Challenge | AlgoScope',
+    description:
+      'Test your algorithm recognition skills! Watch the visualization and guess which sorting algorithm is running in real-time.',
+  },
 }
 
 function setMeta(selector, attribute, value) {
@@ -148,8 +153,18 @@ export default function SeoHead() {
         title = `${formattedAlgo} Graph Search | AlgoScope`
         description = `Visualize ${formattedAlgo} graph search algorithm. Explore nodes and edges in real-time to understand how ${formattedAlgo} traverses complex graph structures.`
       } else if (pathname === '/spath') {
-        title = `${formattedAlgo} Shortest Path | AlgoScope`
-        description = `Discover paths using ${formattedAlgo} shortest path algorithm. Interactive visualization showing how ${formattedAlgo} finds the most efficient route through a graph.`
+        if (algo === 'prim') {
+          title = "Prim's MST Visualizer | AlgoScope"
+          description =
+            "Visualize Prim's Minimum Spanning Tree algorithm step-by-step. Watch how Prim's greedily selects the lowest-weight edge to grow the MST from a starting node."
+        } else if (algo === 'kruskal') {
+          title = "Kruskal's MST Visualizer | AlgoScope"
+          description =
+            "Visualize Kruskal's Minimum Spanning Tree algorithm step-by-step. See how Kruskal's sorts edges and uses a Union-Find structure to build the MST without cycles."
+        } else {
+          title = `${formattedAlgo} Shortest Path | AlgoScope`
+          description = `Discover paths using ${formattedAlgo} shortest path algorithm. Interactive visualization showing how ${formattedAlgo} finds the most efficient route through a graph.`
+        }
       } else if (pathname === '/ldssearch') {
         title = `${formattedAlgo} Search Visualizer | AlgoScope`
         description = `Watch ${formattedAlgo} search in action. A step-by-step interactive visualization of ${formattedAlgo} search on arrays with index tracking and performance metrics.`
