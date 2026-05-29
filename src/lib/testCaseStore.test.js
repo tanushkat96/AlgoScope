@@ -349,7 +349,9 @@ describe('testCaseStore', () => {
 
       expect(globalThis.URL.createObjectURL).toHaveBeenCalled()
       expect(globalThis.document.createElement).toHaveBeenCalledWith('a')
-      expect(globalThis.URL.revokeObjectURL).toHaveBeenCalledWith('mock-blob-url')
+      expect(globalThis.URL.revokeObjectURL).toHaveBeenCalledWith(
+        'mock-blob-url'
+      )
     })
   })
 
