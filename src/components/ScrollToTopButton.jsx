@@ -10,8 +10,9 @@ const ScrollToTopButton = () => {
       const windowHeight = window.innerHeight
       const docHeight = document.documentElement.scrollHeight
 
-      setShowTop(scrollY > 300)
-      setShowBottom(scrollY + windowHeight < docHeight - 300)
+      const isScrollable = docHeight > windowHeight
+      setShowTop(isScrollable && scrollY > 300)
+      setShowBottom(isScrollable && scrollY + windowHeight < docHeight - 300)
     }
     window.addEventListener('scroll', onScroll)
     onScroll()
