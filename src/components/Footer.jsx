@@ -141,6 +141,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
                 title="Aditya Paul on LinkedIn"
+                aria-label="Aditya Paul on LinkedIn"
                 className="w-9 h-9 theme-media-surface border theme-border rounded-lg flex items-center justify-center theme-text-muted hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 hover:border-[#0A66C2]/20 transition-all"
                 whileHover={{ scale: 1.05, y: -2 }}
               >
@@ -158,6 +159,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
                 title="Bratik Mukherjee on LinkedIn"
+                aria-label="Bratik Mukherjee on LinkedIn"
                 className="w-9 h-9 theme-media-surface border theme-border rounded-lg flex items-center justify-center theme-text-muted hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 hover:border-[#0A66C2]/20 transition-all"
                 whileHover={{ scale: 1.05, y: -2 }}
               >
